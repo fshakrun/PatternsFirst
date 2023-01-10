@@ -15,24 +15,24 @@ import static com.codeborne.selenide.Selenide.*;
 public class DeliveryCardTest {
 
     @Test
-    void shouldRegisterTheCard() {
+    void shouldSchedule() {
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999");
         UserInformation info = DataGenerator.Registration.generateByCard("ru");
-        String firstDate = DataGenerator.generateTheDate(4);
-        String secondDate = DataGenerator.generateTheDate(7);
+        String firstDate = DataGenerator.generateTheDate(3);
+        String secondDate = DataGenerator.generateTheDate(5);
 
-        $("[data-test-id=city] input").setValue(info.getCity()); //город
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);//дата
+        $("[data-test-id=city] input").setValue(info.getCity());
+        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
         $("[data-test-id=date] input").setValue(firstDate);
-        $("[data-test-id=name] input").setValue(info.getName());//фамилия и имя
-        $("[data-test-id=phone] input").setValue(info.getPhone());//моб телефон
-        $("[data-test-id=agreement] span").click();//галочка
-        $(withText("Запланировать")).click();//забронировать
+        $("[data-test-id=name] input").setValue(info.getName());
+        $("[data-test-id=phone] input").setValue(info.getPhone());
+        $("[data-test-id=agreement] span").click();
+        $(withText("Запланировать")).click();
         $("[data-test-id=success-notification]").shouldHave(Condition.text("Успешно! Встреча успешно запланирована на "
                 + firstDate), Duration.ofSeconds(15));
 
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);//дата
+        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
         $("[data-test-id=date] input").setValue(secondDate);
         $(withText("Запланировать")).click();
         $("[data-test-id=replan-notification]").shouldBe(Condition.visible).shouldHave(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
